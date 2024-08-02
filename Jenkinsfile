@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     stages {
-        steps {
-            sh "hello jenkins"
+        stage('start') {
+            step {
+                sh "hello jenkins"
+            }
         }
-    }
 }
