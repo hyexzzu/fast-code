@@ -5,7 +5,7 @@ pipeline {
         GITEMAIL = 'bonterouge@gmail.com'
         GITWEBADD = 'https://github.com/hyexzzu/fast-code.git'
         GITSSHADD = 'git@github.com:hyexzzu/deployment.git'
-        GITCREDENTIAL = 'git_cre'
+        GITCREDENTIAL = 'git_cre' 
         DOCKERHUB = 'creamday/fast'
         DOCKERHUBCREDENTIAL = 'docker_cre'
     }
@@ -83,7 +83,7 @@ pipeline {
                     sh "echo manifest update failed"
                 }
                 success {
-                    sh "echo manifest update success"
+                    sh "echo manifest update success!"
                 }
             }
         }
