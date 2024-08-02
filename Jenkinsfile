@@ -2,7 +2,12 @@ pipeline {
     agent any
     environment {
         GITNAME = 'hyexzzu'
-        
+        GITMAIL = 'bonterouge@gmail.com'
+        GITWEBADD = 'https://github.com/hyexzzu/fast-code.git'
+        GITSSHADD = 'git@github.com:hyexzzu/fast-code.git'
+        GITCREDENTIAL = 'git_cre'
+        DOCKERHUB = 'creamday/fast'
+        DOCKERHUBCREDENTIAL = 'docker_cre'
     }
     stages {
         stage('start') {
@@ -14,9 +19,10 @@ pipeline {
                     sh "echo failed"
                 }
                 success {
-                    sh "echo successsss"
+                    sh "echo success"
                 }
             }
         }
     }
+}
 }
