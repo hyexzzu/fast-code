@@ -4,7 +4,7 @@ pipeline {
         GITNAME = 'hyexzzu'
         GITMAIL = 'bonterouge@gmail.com'
         GITWEBADD = 'https://github.com/hyexzzu/fast-code.git'
-        GITSSHADD = 'git@github.com:hyexzzu/fast-code.git'
+        GITSSHADD = 'git@github.com:hyexzzu/deployment.git'
         GITCREDENTIAL = 'git_cre'
         DOCKERHUB = 'creamday/fast'
         DOCKERHUBCREDENTIAL = 'docker_cre'
@@ -50,10 +50,39 @@ pipeline {
             }
             post {
                 failure {
-                    sh "echo failed"
+                    sh "docker image rm -f ${DOCKERHUB}:${currentBuild.number}"
+                    sh "docker image rm -f ${DOCKERHUB}:latest"
+                    sh "ehco push failed"
+                    // 성공하든 실패하든 로컬에 있는 도커 이미지는 삭제
                 }
                 success {
-                    sh "echo success"
+                    sh "docker image rm -f ${DOCKERHUB}:${currentBuild.number}"
+                    sh "docker image rm -f ${DOCKERHUB}:latest"
+                    sh "ehco push failed"
+                    // 성공하든 실패하든 로컬에 있는 도커 이미지는 삭제
+                }
+            }
+        }
+        stage('EKS Manifest File Update') {
+            steps {
+                git credentialsId: GITCREDENTIAL, url: GITSSHADD, branch: 'main'
+                sh "git config --global user.email ${GITEMAIL}"
+                sh "git config --global user.name ${GITNAME}"
+                sh "sed -i 's@${DOCKERHUB}:.*@${DOCKERHUB}:${currentBuild.number}@g' fast.yml"
+
+                sh "git add ."
+                sh "git branch -M main"
+                sh "git commit -m 'fixed tag ${currentBuild.number}' "
+                sh "git remote remove origin"
+                sh "git remote add origin ${GITSSHADD}"
+                sh "git push origin main"
+            }
+            post {
+                failure {
+                    sh "echo manifest update failed"
+                }
+                success {
+                    sh "echo clone success"
                 }
             }
         }
