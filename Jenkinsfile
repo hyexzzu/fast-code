@@ -12,6 +12,7 @@ pipeline {
     stages {
         stage('Checkout Github') {
             steps {
+                // 기본적으로 설치되는 깃허브 플러그인 신택스
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [],
                 userRemoteConfigs: [[credentialsId: GITCREDENTIAL, url: GITWEBADD]]])
             }
@@ -24,9 +25,12 @@ pipeline {
                 }
             }
         }
-        stage('start2') {
+        stage('docker image build') {
             steps {
-                sh "echo hello jenkins!!!"
+                sh "docker build -t ${DOCKERHUB}:${currentBuild.number} ."
+                sh "docker build -t ${DOCKERHUB}:latest ."
+                // currentBuild.number 젠킨스가 제공하는 빌드 넘버 변수
+                // creamday/fast:<빌드넘버> 와 같은 이미지 만들어질 예정
             }
             post {
                 failure {
