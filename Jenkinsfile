@@ -14,7 +14,7 @@ pipeline {
                     sh "echo failed"
                 }
                 success {
-                    sh "echo success"
+                    sh "echo successsss"
                 }
             }
         }
